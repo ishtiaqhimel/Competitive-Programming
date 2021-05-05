@@ -7,7 +7,7 @@ struct Query {
     bool operator < (const Query &other) const {
         int block_own = L / K;
         int block_other = other.L / K;
-        if(block_own==block_other) return R < other.R;
+        if(block_own==block_other) return ((block_own & 1)? R < other.R : R > other.R);
         return block_own < block_other;
     }
 } query[N];
