@@ -33,10 +33,10 @@ int main()
     sort(query, query+q);
     int l = 0, r = -1;
     for(int i = 0; i < q; i++) {
+        while(l > query[i].L) add(--l);
         while(r < query[i].R) add(++r);
         while(l < query[i].L) del(l++);
         while(r > query[i].R) del(r--);
-        while(l > query[i].L) add(--l);
         ans[query[i].id] = sum;
     }
     for(int i = 0; i < q; i++) cout<<ans[i]<<endl;
