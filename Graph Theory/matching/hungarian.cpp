@@ -1,8 +1,8 @@
 /*
   Time Complexity : O(n * n * m)
   
-  - Find the maximum matching of the minimum weight in it.
-  - Find the maximum matching of the maximum weight in it. (all weights must be multiplied by minus one, replace all minimums with maxima, and infinities with minus infinity)
+  - Find the maximum matching of the minimum weight in it. (flag = false)
+  - Find the maximum matching of the maximum weight in it. (flag = true)
   -  A matrix is given a[1...n][1...m]. It is required to find two arrays u[1...n] and v[1...m] such that for any i and j is satisfied u[i] + v[j] <= a[i][j], but the sum of the elements of the arrays u[] and v[] is maximum.
 */
 
@@ -12,9 +12,17 @@ using namespace std;
 #define N 300
 
 int n, m;
-int cost[N][N], res[N];
+int a[N][N], res[N];
 
-int hungarian() {
+int hungarian(bool flag) {
+    if(n > m) m = n;
+    int cost[n + 1][m + 1];
+    for(int i = 1; i <= n; i++) {
+        for(int j = 1; j <= m; j++) {
+            if(flag) cost[i][j] = -a[i][j];
+            else cost[i][j] = a[i][j];
+        }
+    }
     vector<int> u(n + 1), v(m + 1), p(m + 1), way(m + 1);
     for(int i = 1; i <= n; i++) {
         p[0] = i;
@@ -55,17 +63,17 @@ int hungarian() {
     // storing matching
     for(int i = 1; i <= m; i++) res[p[i]] = i;
 
-    return -v[0];
+    return (flag? v[0] : -v[0]);
 }
 
 int main() {
     cin>>n>>m;
     for(int i = 1; i <= n; i++) {
         for(int j = 1; j <= m; j++) {
-            cin>>cost[i][j];
+            cin>>a[i][j];
         }
     }
-    cout<<hungarian()<<endl;
+    cout<<hungarian(false)<<endl;
   
     for(int i = 1; i <= m; i++) cout<<res[i]<<" ";
 
